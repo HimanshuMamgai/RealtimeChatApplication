@@ -33,11 +33,6 @@ io.on("connection", (socket) => {
 
     socket.on("chat message", (msg) => {
         socket.broadcast.emit("chat message", users[socket.id] + " : " + msg);
-        socket.broadcast.emit("is typing", msg);
-    });
-
-    socket.on("is typing", () => {
-        socket.broadcast.emit("is typing", users[socket.id] + " is typing");
     });
     
 });
