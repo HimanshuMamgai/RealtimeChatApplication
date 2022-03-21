@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat application</title>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" onchange="typing()" /><button>Send</button>
+    </form>
+
+    <div class="online">
+      <p id="live"></p>
+    </div>
+
+    <script>
+      var socket = io();
+
+      var form = document.getElementById("form");
+      var input = document.getElementById("input");
+      var messages = document.getElementById("messages");
+      var totalUser = document.getElementById("live");
+
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        if(input.value) {
+          socket.emit("chat message", input.value);
+          input.value = "";
+        };
+      });
+
+      //to get user name
+      let name = prompt("Enter your name to get connected: ");
+      socket.emit("new-user-joined", name);
+      socket.on("user-joined", (name) => {
+        let user = document.createElement("li");
+        user.textContent = name;
+        messages.appendChild(user);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      
+      socket.on("online users", total => {
+        totalUser.innerHTML = total;
+      });
+
+      socket.on("disconnect message", (name) => {
+        let disMsg = document.createElement("li");
+        disMsg.textContent = name;
+        messages.appendChild(disMsg);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("chat message", (msg) => {
+        let item = document.createElement("li");
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      messages.addEventListener("keyup", () => {
+        socket.emit("is typing", name);l
+      });
+
+    </script>
+  <script src="./index.js" type="text/js"></script>
+  </body>
+</html>
