@@ -21,10 +21,10 @@ A step by step series of examples that tell you how to run the program.
 # Clone the Repo
 git clone https://github.com/HimanshuMamgai/RealtimeChatApplication.git
 
-# If yarn is installed
+<b>If yarn is installed</b>
 yarn
 
-# if not
+<b> if not </b>
 npm install
 
 # Built with
